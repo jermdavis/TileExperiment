@@ -4,7 +4,7 @@ using System.Linq;
 namespace TileExperiment
 {
 
-    public class Waveform
+    public class WaveFunction
     {
         public bool Considered { get; set; }
         public bool PropagatedTo { get; set; }

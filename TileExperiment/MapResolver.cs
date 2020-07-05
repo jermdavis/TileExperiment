@@ -22,7 +22,7 @@ namespace TileExperiment
             _helper = helper;
         }
 
-        public Point FindLowEntropyWaveform()
+        public Point FindLowEntropyWaveFunction()
         {
             currentTiles.Clear();
             for (int x = 0; x < _map.Width; x++)
@@ -91,7 +91,7 @@ namespace TileExperiment
             }
         }
 
-        private bool TilePossible(Waveform source, Tile targetPossibility, Point direction)
+        private bool TilePossible(WaveFunction source, Tile targetPossibility, Point direction)
         {
             foreach (var sourceTile in source.Choices)
             {
@@ -123,34 +123,32 @@ namespace TileExperiment
             while (stack.Count > 0)
             {
                 var point = stack.Pop();
-                var cellWaveform = _map.Cells[point.X, point.Y];
+                var cellWaveFunction = _map.Cells[point.X, point.Y];
 
                 var d = Point.Empty;
                 foreach (Point adjPos in _helper.Deltas)
                 {
                     d = point
                         .Sum(adjPos);
-                    //.Wrap(_map);
+                      //.Wrap(_map);
 
                     if (d.X < 0) continue;
                     if (d.X >= _map.Width) continue;
                     if (d.Y < 0) continue;
                     if (d.Y >= _map.Height) continue;
 
-                    var adjWaveform = _map.Cells[d.X, d.Y];
+                    var adjWaveFunction = _map.Cells[d.X, d.Y];
 
-                    adjWaveform.Considered = true;
-
-                    //Debug.Write($"Cell {point}='{cellWaveform.Values}' {_helper.Names[_helper.DirectionIndex(adjPos)]} : Adj {d}='{adjWaveform.Values}'");
+                    adjWaveFunction.Considered = true;
 
                     bool changed = false;
-                    for (int i = 0; i < adjWaveform.Choices.Length; i++)
+                    for (int i = 0; i < adjWaveFunction.Choices.Length; i++)
                     {
-                        if (adjWaveform.Choices[i] != null)
+                        if (adjWaveFunction.Choices[i] != null)
                         {
-                            if (!TilePossible(cellWaveform, adjWaveform.Choices[i], adjPos))
+                            if (!TilePossible(cellWaveFunction, adjWaveFunction.Choices[i], adjPos))
                             {
-                                adjWaveform.Choices[i] = null;
+                                adjWaveFunction.Choices[i] = null;
                                 changed = true;
                             }
                         }
@@ -159,12 +157,10 @@ namespace TileExperiment
                     if (changed)
                     {
                         stack.Push(d);
-                        adjWaveform.PropagatedTo = true;
+                        adjWaveFunction.PropagatedTo = true;
                     }
 
-                    //Debug.WriteLine($" => {d}='{adjWaveform.Values}'");
-
-                    if (adjWaveform.Choices.Where(t => t != null).Count() == 0)
+                    if (adjWaveFunction.Choices.Where(t => t != null).Count() == 0)
                     {
                         throw new Exception("invalid state?");
                     }

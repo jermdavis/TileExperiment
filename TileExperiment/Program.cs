@@ -74,7 +74,7 @@ namespace TileExperiment
                     while (!map.IsResolved)
                     {
                         // pick a (random) tile with lowest entropy
-                        var tile = resolver.FindLowEntropyWaveform();
+                        var tile = resolver.FindLowEntropyWaveFunction();
 
                         // give it a value, by weights
                         resolver.Resolve(tile);

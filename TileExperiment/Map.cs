@@ -25,7 +25,7 @@
             }
         }
 
-        public Waveform[,] Cells { get; set; }
+        public WaveFunction[,] Cells { get; set; }
 
         public TileSet Tileset { get; }
 
@@ -34,16 +34,16 @@
             Width = w;
             Height = h;
 
-            Cells = new Waveform[Width, Height];
+            Cells = new WaveFunction[Width, Height];
             Tileset = tileset;
 
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    var waveform = new Waveform();
-                    waveform.Choices = tileset.Fetch();
-                    Cells[x, y] = waveform;
+                    var waveFunction = new WaveFunction();
+                    waveFunction.Choices = tileset.Fetch();
+                    Cells[x, y] = waveFunction;
                 }
             }
         }
